@@ -1,0 +1,37 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta charset="UTF-8">
+<title>vue-demo2</title>
+<meta name="viewport" content="width=device-width,minimum-scale=1.0,maximum-scale=1.0">
+<meta name="format-detection" contern="telphone=no">
+<script src="../js/vue.js"></script>
+</head>      
+<body>
+<div id="comput">
+  a={{a}} and b={{b}}
+  <br>
+  <button @click="addOne">a+1</button>
+</div>
+<script>
+var computed = new Vue({
+  el: '#comput',
+  data: {
+    a: 100
+  },
+  computed: {
+    b: function() {
+      return this.a * 2  // this.a can't omit this
+    }
+  },
+  methods: {
+    addOne: function() {
+      this.a += 1
+    }
+  }
+})
+</script>
+</body>
+</html>

@@ -1,0 +1,163 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta charset="UTF-8">
+<title>手厅号码归属地查询vue-demo1</title>
+<meta name="viewport" content="width=device-width,minimum-scale=1.0,maximum-scale=1.0">
+<meta name="format-detection" contern="telphone=no">
+<link rel="stylesheet" href="../css/base2015.css">
+<script src="../js/jquery-2.0.3.min.js"></script>
+<script type="text/javascript" src="../js/common.js"></script>
+<script src="../js/vue.js"></script>
+<style>
+.fl{height: 2.2rem;float: left;width: 65%; padding: 0.4rem 0 0.4rem 0.4rem;border: 1px solid #0085D0;margin-right: 3%;box-sizing:border-box; }
+.title{height: 1.5rem;line-height: 1.5rem;font-size: 0.75rem;color: #fff;text-align: center;background: #0085D0;}
+.padd{ padding: 0rem 0.45rem; }
+h2{ height: 2.4rem; line-height: 2.4rem;color: #0085D0;font-size: 0.9rem;padding-left: 1.325rem; }
+.searchmsg{margin:0 0.6rem;border-bottom: 1px solid #ccc; }
+.search input{ display: inline-block;font-size: 1.05rem;  box-sizing:border-box; }
+input.num{ width: 100%;border:none;}
+input.button{ height: 2.2rem;width:32%;line-height: 2.2rem;background: #0085D0; border:none; color: #fff; }
+.tip{;font-size: 0.6rem;padding: 1rem 0.85rem;color: #666666;line-height: 1rem; }
+.result h4{font-size: 0.75rem;color: #0085D0;margin-top:1rem;padding:0 0.85rem;}
+.result table,.result table tr{ border:1px solid #ccc; border-collapse: collapse; }
+.result .ta{padding: 0px 0.75rem;}
+.result table{ font-size: 0.65rem; margin-top: 0.5rem; width: 100%;box-sizing:border-box; }
+.result table tr{ height: 1.75rem; line-height: 1.75rem; }
+.result table tr:nth-child(2n+1) { background: #EDEDED; }
+.result table tr:nth-child(2n+1) td{ width: 4rem; padding-left: 0.5rem; box-sizing:border-box;}
+.result table tr:nth-child(2n) td{background: #f7f7f7;}
+.result table tr td:nth-child(1){ padding-left: 1rem; color: #666;font-size: 0.65rem;}
+.result table tr td:nth-child(2){ text-align: right;padding-right: 1rem; color: #333;font-size: 0.75rem;}
+.result{display: none;}
+.noresult{padding: 0px 1.5rem;font-size: 1rem;text-align: center;margin-top:2rem;line-height: 1.35rem;color: #0085D0;display: none;}
+</style>
+</head>      
+<body>
+<div id="app">
+<div class="title">号码归属地查询</div>
+	<task-app list=":tasks">
+	</task-app>
+</div>
+<template id="task-template">
+	<div class="searchnum">
+		<h2>手机号码:</h2>
+		<div class="searchmsg">
+			<div class="search padd">
+				<div class="fl"><input class="num" type="text"></div><input class="button" type="button" value="查询" @click="search_btn">
+			</div>
+			<div class="tip">
+				<span style="color:#8FC31F;">温馨提示：</span>查询结果仅供参考，以当地营业厅查询结果为准.
+			</div>
+		</div>
+		<p class="noresult padd"></p>
+		<div class="result padd">
+			<h4>查询结果</h4>
+			<div class="ta">
+				<table class="table1">
+					<tr>
+						<td>所查号码</td>
+						<td class="num"></td>
+					</tr>
+					<tr>
+						<td>归属省</td>
+						<td class="province"></td>
+					</tr>
+					<tr>
+						<td>归属地市</td>
+						<td class="region"></td>
+					</tr>
+					<tr>
+						<td>归属区县</td>
+						<td class="country"></td>
+					</tr>
+					<tr>
+						<td>运行商</td>
+						<td class="belong_company"></td>
+					</tr>
+				</table>
+			</div>
+		</div>
+	</div>
+
+</template>
+<script type="text/javascript">
+Vue.component('task-app',{
+  template:'#task-template',  
+  gUrl : 'http://app.m.zj.chinamobile.com/zjweb/',
+  methods:{
+  	search_btn:function(){
+		$('p.noresult').hide();
+   		var numText = $("input.num").val();
+
+	    var re =/^1\d{10}$/;
+	    var numResult = numText.match(re);
+
+   		if(numResult!=null){
+   			this.queryResult(numResult);
+	    }else{
+	    	$('.result').hide();
+	    	$('p.noresult').show();
+	    	$('p.noresult').html('您输入的手机号码格式有误，请重新输入');
+	    }
+  	},
+  	queryResult:function(num){
+	   		var url = this.gUrl+"AttributionSearch.do?phonenumber="+num;
+	   		//var data = {"belongcompany":"1","countryname":"临安","msg_old":"操作成功","provincename":"浙江","reginname":"杭州","result":"0"}
+			ajax(url, '')
+			.done(function(data, status){
+				var resultdtml = '';
+				if (data.result === "0") {
+					$(".result").show();
+					if((data.provincename=="浙江")||data.provincename=="浙江省"){
+						// 归属地是浙江省时，输出 县级名称
+						resultdtml='<tr><td>所查号码</td><td>'+num+'</td></tr><tr><td>归属省</td><td>'+data.provincename+'</td></tr><tr><td>归属地市</td><td>'+data.reginname+'</td></tr><tr><td>归属区县</td><td>'+data.countryname+'</td></tr><tr><td>运营商</td><td>'+this.belongcompany(data.belongcompany)+'</td></tr>';
+
+					}else{
+						//除浙江以外的地区，输出的结果 把县级名称隐藏，不显示
+						resultdtml='<tr><td>所查号码</td><td>'+num+'</td></tr><tr><td>归属省</td><td>'+data.provincename+'</td></tr><tr><td>归属地市</td><td>'+data.reginname+'</td></tr><tr><td>运营商</td><td>'+this.belongcompany(data.belongcompany)+'</td></tr>';
+					}
+					$('.table1').html(resultdtml);
+				}else{
+					$('.result').hide();
+					$('p.noresult').show();
+			    	$('p.noresult').html(data.msg);
+				}
+			})
+  	},
+  	belongcompany:function(b_id){
+  			if (b_id=='1') {
+				return "移动";
+			}else if(b_id=='2'){
+				return "联通";
+			}else if(b_id=='3'){
+				return "电信";
+			}else{
+				return "";
+			}
+  	}
+  }
+})
+var vm = new Vue({
+  el: '#app',
+  data:{
+  	winWidth : $(window).width(),
+  	font_size : (this.winWidth / 320) * 20,
+    tasks : {"belongcompany":"1","countryname":"临安","msg_old":"操作成功","provincename":"浙江","reginname":"杭州","result":"0"}
+  },
+  computed:{
+
+  },
+  methods:{
+  	setpage:function(){
+  		alert(this.font_size)
+  		//$('html').css('font-size', font_size());  		
+  	}
+  }
+})
+vm.setpage();
+</script>
+</body>
+</html>

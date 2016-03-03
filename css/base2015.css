@@ -1,0 +1,23 @@
+@charset "utf-8";
+/* CSS reset */
+html, body, div, h1, h2, h3, h4, h5, h6, ul, ol, dl, li, dt, dd, p, blockquote,
+pre, form, fieldset, table, th, td, input, table, textarea { margin: 0; padding: 0;}
+table { border-collapse:collapse; border-spacing:0;}
+fieldset, img { border:none;}
+address,caption,cite,code,dfn,em,strong,th,var { font-style:normal; font-weight:normal;}
+ol, ul, li { list-style:none;}
+caption,th { text-align:left;}
+em, i { font-style: normal;}
+h1,h2,h3,h4,h5,h6 { font-size: 100%; font-weight: normal;}
+img { border:0; -ms-interpolation-mode:bicubic; vertical-align:middle;}
+button, input[type="button"], input[type="reset"], input[type="submit"] { cursor:pointer;-webkit-appearance:button; *overflow:visible}
+input[type="checkbox"], input[type="radio"] { box-sizing:border-box; padding:0;}
+input[type="search"] { -webkit-appearance:textfield;-moz-box-sizing:content-box;-webkit-box-sizing:content-box;box-sizing:content-box;}
+input[type="search"]::-webkit-search-decoration {-webkit-appearance:none}
+button::-moz-focus-inner, input::-moz-focus-inner { border:0; padding:0;}
+a, a:hover { text-decoration: none; }
+a:hover,a:active, input, :focus { outline:none;}
+p:before, p:after { content:'';}
+* { -webkit-tap-highlight-color:rgba(0,0,0,0); -webkit-tap-highlight-color: transparent; tap-highlight-color:rgba(0,0,0,0); tap-highlight-color:transparent;}
+body { -webkit-text-size-adjust:none; -webkit-touch-callout:none; -webkit-user-select:none; font-family: Helvetica,Arial,sans-serif;line-height: 1rem; background-color:#fff; }
+.bdbox { -moz-box-sizing:border-box; -webkit-box-sizing:border-box; box-sizing:border-box; }
