@@ -85,10 +85,9 @@ input.button{ height: 2.2rem;width:32%;line-height: 2.2rem;background: #0085D0; 
 </template>
 <script type="text/javascript">
 Vue.component('task-app',{
-  template:'#task-template',  
-  gUrl : 'http://app.m.zj.chinamobile.com/zjweb/',
-  methods:{
-  	search_btn:function(){
+  template : '#task-template',
+  methods : {
+  	search_btn : function(){
 		$('p.noresult').hide();
    		var numText = $("input.num").val();
 
@@ -103,8 +102,9 @@ Vue.component('task-app',{
 	    	$('p.noresult').html('您输入的手机号码格式有误，请重新输入');
 	    }
   	},
-  	queryResult:function(num){
-	   		var url = this.gUrl+"AttributionSearch.do?phonenumber="+num;
+  	queryResult : function(num){
+	   		var url = "http://app.m.zj.chinamobile.com/zjweb/AttributionSearch.do?phonenumber="+num;
+	   		var that = this;
 	   		//var data = {"belongcompany":"1","countryname":"临安","msg_old":"操作成功","provincename":"浙江","reginname":"杭州","result":"0"}
 			ajax(url, '')
 			.done(function(data, status){
@@ -113,11 +113,11 @@ Vue.component('task-app',{
 					$(".result").show();
 					if((data.provincename=="浙江")||data.provincename=="浙江省"){
 						// 归属地是浙江省时，输出 县级名称
-						resultdtml='<tr><td>所查号码</td><td>'+num+'</td></tr><tr><td>归属省</td><td>'+data.provincename+'</td></tr><tr><td>归属地市</td><td>'+data.reginname+'</td></tr><tr><td>归属区县</td><td>'+data.countryname+'</td></tr><tr><td>运营商</td><td>'+this.belongcompany(data.belongcompany)+'</td></tr>';
+						resultdtml='<tr><td>所查号码</td><td>'+num+'</td></tr><tr><td>归属省</td><td>'+data.provincename+'</td></tr><tr><td>归属地市</td><td>'+data.reginname+'</td></tr><tr><td>归属区县</td><td>'+data.countryname+'</td></tr><tr><td>运营商</td><td>'+that.belongcompany(data.belongcompany)+'</td></tr>';
 
 					}else{
 						//除浙江以外的地区，输出的结果 把县级名称隐藏，不显示
-						resultdtml='<tr><td>所查号码</td><td>'+num+'</td></tr><tr><td>归属省</td><td>'+data.provincename+'</td></tr><tr><td>归属地市</td><td>'+data.reginname+'</td></tr><tr><td>运营商</td><td>'+this.belongcompany(data.belongcompany)+'</td></tr>';
+						resultdtml='<tr><td>所查号码</td><td>'+num+'</td></tr><tr><td>归属省</td><td>'+data.provincename+'</td></tr><tr><td>归属地市</td><td>'+data.reginname+'</td></tr><tr><td>运营商</td><td>'+that.belongcompany(data.belongcompany)+'</td></tr>';
 					}
 					$('.table1').html(resultdtml);
 				}else{
@@ -127,7 +127,7 @@ Vue.component('task-app',{
 				}
 			})
   	},
-  	belongcompany:function(b_id){
+  	belongcompany : function(b_id){
   			if (b_id=='1') {
 				return "移动";
 			}else if(b_id=='2'){
@@ -144,16 +144,16 @@ var vm = new Vue({
   el: '#app',
   data:{
   	winWidth : $(window).width(),
-  	font_size : (this.winWidth / 320) * 20,
     tasks : {"belongcompany":"1","countryname":"临安","msg_old":"操作成功","provincename":"浙江","reginname":"杭州","result":"0"}
   },
-  computed:{
-
+  computed : {
+      font_size:function(){
+        return (this.winWidth / 320) * 20
+      }
   },
-  methods:{
-  	setpage:function(){
-  		alert(this.font_size)
-  		//$('html').css('font-size', font_size());  		
+  methods : {
+  	setpage : function(){
+  		$('html').css('font-size', this.font_size);  		
   	}
   }
 })
