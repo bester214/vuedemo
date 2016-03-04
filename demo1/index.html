@@ -38,7 +38,7 @@ input.button{ height: 2.2rem;width:32%;line-height: 2.2rem;background: #0085D0; 
 <body>
 <div id="app">
 <div class="title">号码归属地查询</div>
-	<task-app list=":tasks">
+	<task-app>
 	</task-app>
 </div>
 <template id="task-template">
@@ -128,11 +128,11 @@ Vue.component('task-app',{
 			})
   	},
   	belongcompany : function(b_id){
-  			if (b_id=='1') {
+  			if (b_id == '1') {
 				return "移动";
-			}else if(b_id=='2'){
+			}else if(b_id == '2'){
 				return "联通";
-			}else if(b_id=='3'){
+			}else if(b_id == '3'){
 				return "电信";
 			}else{
 				return "";
@@ -143,8 +143,7 @@ Vue.component('task-app',{
 var vm = new Vue({
   el: '#app',
   data:{
-  	winWidth : $(window).width(),
-    tasks : {"belongcompany":"1","countryname":"临安","msg_old":"操作成功","provincename":"浙江","reginname":"杭州","result":"0"}
+  	winWidth : $(window).width()
   },
   computed : {
       font_size:function(){
